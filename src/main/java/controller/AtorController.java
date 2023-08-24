@@ -1,5 +1,6 @@
 package controller;
 
+import application.AtorApplication;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -19,7 +20,7 @@ public class AtorController extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-
+    AtorApplication atorApplication = new AtorApplication();
     public AtorController() {
         super();
         // TODO Auto-generated constructor stub
@@ -33,36 +34,11 @@ public class AtorController extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Criar o EntityManagerFactory
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistenceAcervo");
+        String nome = request.getParameter("nome");
+        this.atorApplication.cadastrarAtor(nome);
 
-        // Criar o EntityManager
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        try {
-            // Iniciar transação
-            entityManager.getTransaction().begin();
-
-            // Criar um objeto Ator
-            Ator ator = new Ator();
-            ator.setNome("Nome do dkdopsdpodsop");
-
-            // Persistir o objeto no banco de dados
-            entityManager.persist(ator);
-
-            // Commit da transação
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            // Rollback da transação em caso de erro
-            entityManager.getTransaction().rollback();
-        } finally {
-            // Fechar o EntityManager
-            entityManager.close();
-        }
-
-        // Fechar o EntityManagerFactory
-        entityManagerFactory.close();
-
+        response.setContentType("application/json");
+        response.getWriter().write("{\"message\": \"Cadastrado realizado com sucesso!\"}");
     }
 
     /**

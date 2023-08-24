@@ -74,7 +74,7 @@ function createTables(tipoTabela) {
     });
 
 	const headerCell3 = headerRow.insertCell(i);
-    headerCell3.textContent = 'Ações';
+    headerCell3.textContent = 'Acoes';
 
     console.log('entityData', entityData)
     entityData.forEach(entity => {
@@ -210,7 +210,6 @@ function construirTelaDecadastros(tipoCadastro) {
     // Adicionar evento ao botão
     submitButton.addEventListener('click', function(event) {
         var formData = {};
-        event.preventDefault();
 
         for (var i = 0; i < atributos.length; i++) {
             var inputName = atributos[i].toLowerCase();
@@ -222,6 +221,7 @@ function construirTelaDecadastros(tipoCadastro) {
 
         if (tipoCadastro == 'ator') {
             formData.action = 'cadastrarAtor';
+            formData.nome = 'Priscila';
             controller = "AtorController"
         } else if (tipoCadastro == 'diretor') {
             formData.action = 'cadastrarDiretor';
@@ -229,7 +229,7 @@ function construirTelaDecadastros(tipoCadastro) {
         } else if (tipoCadastro == 'classe') {
             controller = "ClasseController"
         }
-
+         console.log('formData', formData)
         console.log('formData', formData )
         fetch(url + controller, {
             method: 'POST',
@@ -249,6 +249,7 @@ function construirTelaDecadastros(tipoCadastro) {
             console.error('Erro na requisição:', error);
         });
 
+        event.preventDefault();
     });
 
     form.appendChild(submitButton);

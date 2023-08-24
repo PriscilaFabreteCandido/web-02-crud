@@ -7,6 +7,7 @@
     <persistence-unit name="persistenceAcervo" >
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>model.Ator</class>
+        <class>model.Classe</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" /> <!-- DB Driver -->

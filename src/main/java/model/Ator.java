@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Ator implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name="nome", length = 250, nullable = true)
     private String nome;

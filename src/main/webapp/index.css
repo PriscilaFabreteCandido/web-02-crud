@@ -95,13 +95,24 @@ body, ul {
 }
 
 /* Estilos para os botões */
-.edit-button, .delete-button {
+.edit-button {
     padding: 5px 10px;
     margin-right: 5px;
-    background-color: #3498db;
+    background-color: #F59E0B;
     color: #fff;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  color: #ffffff;
+  background: #EF4444;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
 }
 
 .edit-button:hover, .delete-button:hover {

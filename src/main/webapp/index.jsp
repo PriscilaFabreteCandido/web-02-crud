@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="index.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@500;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
@@ -22,10 +23,10 @@
         <li class="nav-item has-submenu">
     	<a href="#">Cadastros</a>
 		    <ul class="submenu">
-		        <li><a href="#" onclick="construirTelaDecadastros('ator'); return false;">Ator</a></li>
-		        <li><a href="#" onclick="construirTelaDecadastros('classe'); return false;">Classe</a></li>
-		        <li><a href="#" onclick="construirTelaDecadastros('diretor'); return false;">Diretor</a></li>
-		        <li><a href="#" onclick="construirTelaDecadastros('item'); return false;">Item</a></li>
+		        <li><a href="" onclick="construirTelaDecadastros('ator'); return false;">Ator</a></li>
+		        <li><a href="" onclick="construirTelaDecadastros('classe'); return false;">Classe</a></li>
+		        <li><a href="" onclick="construirTelaDecadastros('diretor'); return false;">Diretor</a></li>
+		        <li><a href="" onclick="construirTelaDecadastros('item'); return false;">Item</a></li>
 		    </ul>
 		</li>
 

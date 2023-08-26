@@ -3,7 +3,7 @@ var item;
 var columns = {
 	"ator" : ["nome"],
 	"diretor": ["nome"],
-	"classe" : ['nome', 'valor', 'prazodevolucao']
+	"classe" : ['nome', 'valor', 'prazoDevolucao']
 }
 
 var atores = [];
@@ -33,11 +33,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+function getUrl(tipoCadastro){
+    var url = 'http://localhost:8080/WEB-02/';
+    if(tipoCadastro == "ator"){
+		return url + 'AtorController';
+	}else if(tipoCadastro == "diretor"){
+		return url + 'DiretorController';
+	} else if(tipoCadastro = "classe"){
+		return url + 'ClasseController';
+	}
+    console.log('tipoCadastro', tipoCadastro)
+    
+}
 
 function excluir(entity, tipoCadastro) {
     var formData = {};
-    formData = entity;
-     fetch('http://localhost:8080/WEB-02/AtorController/deletar', {
+    formData.id = entity.id;
+     fetch(getUrl(tipoCadastro) + '/deletar', {
         method: 'DELETE',
         body: JSON.stringify(formData),
         headers: {
@@ -46,18 +58,35 @@ function excluir(entity, tipoCadastro) {
     })
     .then(response => response.json())
     .then(data => {
-        this.getAllTipoEntidade(tipoCadastro);
+        getAllTipoEntidade(tipoCadastro);
     })
     .catch(error => {
         console.error('Erro:', error);
     });
 }
 
+function getDate(date){
+    var timestamp = parseInt(date.toString());
+    if (!isNaN(timestamp)) {
+        // Converta o timestamp em um objeto Date
+        var dataDesejada = new Date(timestamp);
+
+        // Obtendo os componentes da data (ano, mês, dia)
+        var ano = dataDesejada.getFullYear();
+        var mes = (dataDesejada.getMonth() + 1).toString().padStart(2, '0'); // Os meses são indexados a partir de 0
+        var dia = dataDesejada.getDate().toString().padStart(2, '0');
+
+        // Criando a data no formato de string esperado pelo campo de entrada
+        var dataFormatada = `${ano}-${mes}-${dia}`;
+        console.log('dataFormatada', dataFormatada)
+        return dataFormatada;
+    }
+}
 function editar(entity, tipoTabela){
     var atributos = this.getAtributos(tipoTabela);
     isUpdate = true;
     idEntidade = entity.id;
-
+   
     for (var i = 0; i < atributos.length; i++) {
         var inputName = atributos[i].toLowerCase();
         var inputValue = entity[inputName]; // Obtém o valor do atributo da entidade
@@ -66,13 +95,17 @@ function editar(entity, tipoTabela){
 
         if (inputElement) {
             if (inputElement.type === 'date') {
-                inputElement.value = inputValue; // Preenche o valor para campos de data
+                console.log('entity', entity)
+                 // Verifique se entity.prazodevolucao é um timestamp válido
+                var dataFormatada = getDate(entity.prazoDevolucao);
+                inputElement.value = dataFormatada;
             } else {
                 inputElement.value = inputValue || ''; // Preenche o valor ou deixa em branco
             }
         }
     }
 }
+
 function limparInputs(tipoTabela) {
     var atributos = this.getAtributos(tipoTabela);
 
@@ -104,7 +137,7 @@ function createTables(tipoTabela) {
         console.log('jjj clasesse')
 		entityData = classes;
 	}
-    console.log('jjj create', tipoTabela, entityData)
+    
     if (!entityData) {
         console.error("Tipo de entidade inválido.");
         return;
@@ -137,7 +170,7 @@ function createTables(tipoTabela) {
         columnsToDisplay.forEach((column, index) => {
             const cell = row.insertCell(index);
             var text = entity[column];
-            if(column == 'prazodevolucao'){
+            if(column == 'prazoDevolucao'){
                 text = moment(entity[column]).format('DD/MM/YYYY');
             }
 
@@ -274,7 +307,6 @@ function construirTelaDecadastros(tipoCadastro) {
             formData[inputName] = document.getElementsByName(inputName)[0].value;
         }
 
-        console.log('isUpdate', isUpdate)
         if(isUpdate){
             formData.id = idEntidade;
             updateEntidade(tipoCadastro, formData);
@@ -302,6 +334,12 @@ function updateEntidade(tipoCadastro, formData){
         controller = "DiretorController/atualizar";
     } else if (tipoCadastro == 'classe') {
         controller = "ClasseController/atualizar"
+    }
+    
+    if(tipoCadastro == 'classe'){
+        var date = new Date(formData.prazodevolucao);
+        var timestamp = date.getTime();
+        formData.prazoDevolucao = timestamp;
     }
 
     fetch(url + controller, {

@@ -3,6 +3,7 @@ package controller;
 import application.ClasseApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import dto.AtorDto;
 import dto.ClasseDto;
 import model.Ator;
 import model.Classe;
@@ -66,13 +67,50 @@ public class ClasseController extends HttpServlet {
     }
 
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Implementação semelhante ao método doPost, mas para atualização
-        // ...
+        // Lê o corpo da solicitação como JSON
+        BufferedReader reader = request.getReader();
+        StringBuilder body = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            body.append(line);
+        }
+
+        // Converte o JSON para um objeto Java usando o ObjectMapper do Jackson
+        ObjectMapper objectMapper = new ObjectMapper();
+        ClasseDto classeRequestBody = objectMapper.readValue(body.toString(), ClasseDto.class);
+
+        this.classeApplication.editarClasse(classeRequestBody.getId(), classeRequestBody.getNome(), classeRequestBody.getValor(), classeRequestBody.getPrazoDevolucao());
+
+        // Configuração do ObjectMapper para a serialização em JSON
+        List<Classe> listaClasses = classeApplication.listarClasses();
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+        // Define o tipo de conteúdo da resposta como JSON
+        response.setContentType("application/json");
+
+        // Escreve o JSON na resposta
+        PrintWriter out = response.getWriter();
+        objectMapper.writeValue(out, listaClasses);
     }
 
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Implementação semelhante ao método doPost, mas para exclusão
-        // ...
+        // Lê o corpo da solicitação como JSON
+        BufferedReader reader = request.getReader();
+        StringBuilder body = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            body.append(line);
+        }
+
+        // Converte o JSON para um objeto Java usando o ObjectMapper do Jackson
+        ObjectMapper objectMapper = new ObjectMapper();
+        ClasseDto classeDto = objectMapper.readValue(body.toString(), ClasseDto.class);
+
+        this.classeApplication.excluirClasse(classeDto.getId());
+
+        // Configura a resposta
+        response.setContentType("application/json");
+        response.getWriter().write("{\"message\": \"Excluído com sucesso!\"}");
     }
 
     // Os demais métodos como doHead permanecem vazios ou não implementados
